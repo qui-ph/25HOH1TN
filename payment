@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Nhập ID để nhận ảnh</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 40px;
+    }
+    input {
+      padding: 8px;
+      font-size: 16px;
+    }
+    button {
+      padding: 8px 12px;
+      font-size: 16px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    img {
+      margin-top: 20px;
+      max-width: 300px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Nhập ID để nhận ảnh</h2>
+  <input type="text" id="userId" placeholder="Nhập ID của bạn...">
+  <button onclick="showImage()">Xem ảnh</button>
+
+  <div id="result"></div>
+
+  <script>
+    function showImage() {
+      const id = document.getElementById("userId").value.trim();
+      const resultDiv = document.getElementById("result");
+
+      // Map ID -> ảnh
+      const images = {
+        "25140001": "https://img.vietqr.io/image/970436-2888270205.-compact.png?amount=150000&addInfo=XXXXX&accountName=Phan%20Hieu%20Huy",
+        "25140002": "https://img.vietqr.io/image/970436-2888270205.-compact.png?amount=150000&addInfo=XXXXX&accountName=Phan%20Hieu%20Huy",
+      };
+
+      if (images[id]) {
+        resultDiv.innerHTML = `<img src="${images[id]}" alt="Ảnh cho ID ${id}">`;
+      } else {
+        resultDiv.innerHTML = `<p style="color:red;">❌ Không tìm thấy ảnh cho ID này</p>`;
+      }
+    }
+  </script>
+</body>
+</html>
