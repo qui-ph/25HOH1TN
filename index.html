@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Nhập ID để nhận ảnh</title>
+  <title>Nhập MSSV</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -28,9 +28,9 @@
   </style>
 </head>
 <body>
-  <h2>Nhập ID để nhận ảnh</h2>
-  <input type="text" id="userId" placeholder="Nhập ID của bạn...">
-  <button onclick="showImage()">Xem ảnh</button>
+  <h2>Nhập MSSV</h2>
+  <input type="text" id="userId" placeholder="MSSV...">
+  <button onclick="showImage()">Enter</button>
 
   <div id="result"></div>
 
@@ -48,7 +48,7 @@
       if (images[id]) {
         resultDiv.innerHTML = `<img src="${images[id]}" alt="Ảnh cho ID ${id}">`;
       } else {
-        resultDiv.innerHTML = `<p style="color:red;">❌ Không tìm thấy ảnh cho ID này</p>`;
+        resultDiv.innerHTML = `<p style="color:red;">❌ Không tìm thấy ID này</p>`;
       }
     }
   </script>
