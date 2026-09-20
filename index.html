@@ -1,95 +1,463 @@
+```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Nhập MSSV</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tài liệu Hoá phân tích & Quỹ lớp - 25HOH1TN</title>
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
+      margin: 0;
+      min-height: 100vh;
       font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #dbeafe, #f0f9ff, #e0f2fe);
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 550px;
+
+      background: rgba(255, 255, 255, 0.96);
+      padding: 35px;
+
+      border-radius: 20px;
+
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+
       text-align: center;
-      margin: 40px;
     }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 10px;
+
+      color: #1e3a8a;
+      font-size: 26px;
+    }
+
+    .subtitle {
+      color: #64748b;
+      margin-bottom: 25px;
+      font-size: 15px;
+    }
+
+    .search-box {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
     input {
-      padding: 8px;
+      flex: 1;
+
+      padding: 12px 15px;
+
       font-size: 16px;
+
+      border: 2px solid #cbd5e1;
+      border-radius: 10px;
+
+      outline: none;
+
+      transition: 0.2s;
     }
-    button {
-      padding: 8px 12px;
+
+    input:focus {
+      border-color: #2563eb;
+
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .search-btn {
+      padding: 12px 20px;
+
       font-size: 16px;
-      margin-left: 10px;
+      font-weight: bold;
+
+      color: white;
+      background: #2563eb;
+
+      border: none;
+      border-radius: 10px;
+
       cursor: pointer;
+
+      transition: 0.2s;
     }
-    img {
-      margin-top: 20px;
-      max-width: 300px;
-      border: 2px solid #ccc;
-      border-radius: 8px;
+
+    .search-btn:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+    }
+
+    #result {
+      margin-top: 25px;
+    }
+
+    .success-text {
+      color: #334155;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .result-image {
+      max-width: 100%;
+      width: 350px;
+
+      border-radius: 12px;
+
+      border: 2px solid #e2e8f0;
+
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+
+      transition: 0.25s;
+    }
+
+    .result-image:hover {
+      transform: scale(1.02);
+    }
+
+    /* Nút tải ảnh */
+    .download-btn {
+      display: inline-block;
+
+      margin-top: 18px;
+
+      padding: 12px 22px;
+
+      background: #16a34a;
+      color: white;
+
+      border: none;
+      border-radius: 10px;
+
+      font-size: 16px;
+      font-weight: bold;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+    .download-btn:hover {
+      background: #15803d;
+      transform: translateY(-2px);
+    }
+
+    .download-btn:disabled {
+      background: #94a3b8;
+      cursor: wait;
+      transform: none;
+    }
+
+    .error {
+      padding: 12px;
+
+      color: #b91c1c;
+      background: #fee2e2;
+
+      border-radius: 10px;
+
+      font-weight: bold;
+    }
+
+    .footer {
+      margin-top: 25px;
+
+      font-size: 13px;
+      color: #94a3b8;
+    }
+
+    @media (max-width: 500px) {
+
+      .container {
+        padding: 25px 20px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      .search-box {
+        flex-direction: column;
+      }
+
+      .search-btn {
+        width: 100%;
+      }
+
+      .result-image {
+        width: 100%;
+      }
     }
   </style>
 </head>
-<body>
-  <h2>25HOH1TN: Tài liệu Hoá phân tích + Quỹ lớp</h2>
-  <input type="text" id="userId" placeholder="Nhập MSSV">
-  <button onclick="showImage()">Enter</button>
 
-  <div id="result"></div>
+<body>
+
+  <div class="container">
+
+    <h1>📚 25HOH1TN</h1>
+
+    <div class="subtitle">
+      Tài liệu Hoá phân tích + Quỹ lớp
+    </div>
+
+    <div class="search-box">
+
+      <input
+        type="text"
+        id="userId"
+        placeholder="Nhập MSSV..."
+        autocomplete="off"
+      >
+
+      <button
+        class="search-btn"
+        onclick="showImage()"
+      >
+        🔍 Tra cứu
+      </button>
+
+    </div>
+
+    <div id="result"></div>
+
+    <div class="footer">
+      Nhập MSSV để xem thông tin tương ứng
+    </div>
+
+  </div>
+
 
   <script>
-    function showImage() {
-      const id = document.getElementById("userId").value.trim();
-      const resultDiv = document.getElementById("result");
 
-      // Map ID -> ảnh
+    // =====================================
+    // DANH SÁCH MSSV → LINK ẢNH
+    // =====================================
+
     const images = {
-    "25140001": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=210266&accountName=Phan Hieu Huy&addInfo=001 GIA BẢO TAI LIEU HPT VA QUY LOP",
-    "25140002": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=002 ANH KIỆT TAI LIEU HOA PHAN TICH",
-    "25140003": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=003 QUỐC LINH TAI LIEU HOA PHAN TICH",
-    "25140004": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=004 NGỌC LUÂN TAI LIEU HOA PHAN TICH",
-    "25140005": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=005 ĐỨC NHÂN TAI LIEU HOA PHAN TICH",
-    "25140006": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=006 GIA PHÚC TAI LIEU HOA PHAN TICH",
-    "25140007": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=007 MINH TÂM TAI LIEU HOA PHAN TICH",
-    "25140008": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=008 MẠNH HÀ TAI LIEU HOA PHAN TICH",
-    "25140009": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=105000&accountName=Phan Hieu Huy&addInfo=009 PHÚC TOÀN TAI LIEU HPT VA QUY LOP",
-    "25140016": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=016 NGUYÊN BẢO TAI LIEU HOA PHAN TICH",
-    "25140028": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=028 NGỌC HÂN TAI LIEU HOA PHAN TICH",
-    "25140036": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=036 HIẾU HUY TAI LIEU HOA PHAN TICH",
-    "25140041": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=041 PHƯƠNG LINH TAI LIEU HOA PHAN TICH",
-    "25140044": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=044 XUÂN MAI TAI LIEU HOA PHAN TICH",
-    "25140049": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=70266&accountName=Phan Hieu Huy&addInfo=049 NHƯ NGỌC TAI LIEU HOA PHAN TICH",
-    "25140050": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=050 XUÂN NHI TAI LIEU HOA PHAN TICH",
-    "25140051": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=051 MINH NHƯ TAI LIEU HOA PHAN TICH",
-    "25140053": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=053 ĐÔNG PHÁT TAI LIEU HOA PHAN TICH",
-    "25140056": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=056 QUỐC PHÚ TAI LIEU HOA PHAN TICH",
-    "25140058": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=058 MINH QUÂN TAI LIEU HOA PHAN TICH",
-    "25140064": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=30266&accountName=Phan Hieu Huy&addInfo=064 MINH THƯ TAI LIEU HOA PHAN TICH",
-    "25140081": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=081 THIÊN ÂN TAI LIEU HOA PHAN TICH",
-    "25140088": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=30266&accountName=Phan Hieu Huy&addInfo=088 AN BÌNH TAI LIEU HOA PHAN TICH",
-    "25140094": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=094  NGUYEN HAN TAI LIEU HOA PHAN TICH",
-    "25140107": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=5266&accountName=Phan Hieu Huy&addInfo=107 ĐĂNG KHOA QUY LOP",
-    "25140121": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=121 THÀNH NGUYÊN TAI LIEU HOA PHAN TICH",
-    "25140130": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=30266&accountName=Phan Hieu Huy&addInfo=130 THÚY PHƯỢNG TAI LIEU HOA PHAN TICH",
-    "25140131": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=131 TẤN SANG TAI LIEU HOA PHAN TICH",
-    "25140137": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=137 PHÚC THỊNH TAI LIEU HOA PHAN TICH",
-    "25140169": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=169 VĂN HẢO TAI LIEU HOA PHAN TICH",
-    "25140174": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=174 QUANG HUY TAI LIEU HOA PHAN TICH",
-    "25140175": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=175 GIA HUY TAI LIEU HOA PHAN TICH",
-    "25140178": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=178 TUẤN KIỆT TAI LIEU HOA PHAN TICH",
-    "25140182": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=30266&accountName=Phan Hieu Huy&addInfo=182 THÙY LINH TAI LIEU HOA PHAN TICH",
-    "25140186": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=90266&accountName=Phan Hieu Huy&addInfo=186 HOÀI NAM TAI LIEU HPT VA QUY LOP",
-    "25140197": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=90266&accountName=Phan Hieu Huy&addInfo=197 ĐỨC PHÁT TAI LIEU HPT VA QUY LOP",
-    "25140205": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=30266&accountName=Phan Hieu Huy&addInfo=205 BỘI SAN TAI LIEU HOA PHAN TICH",
-    "25140210": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=210 BẢO THIÊN TAI LIEU HOA PHAN TICH",
-    "25140215": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=210266&accountName=Phan Hieu Huy&addInfo=215 MINH TRIẾT TAI LIEU HPT VA QUY LOP",
-    "25140223": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=223 TUẤN VŨ TAI LIEU HOA PHAN TICH",
-    "25140226": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=226 KIM YẾN TAI LIEU HOA PHAN TICH",
-  };
 
-      if (images[id]) {
-        resultDiv.innerHTML = `<img src="${images[id]}" alt="Ảnh cho ID ${id}">`;
-      } else {
-        resultDiv.innerHTML = `<p style="color:red;">❌ Không tìm thấy MSSV này</p>`;
+      "25140001": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=210266&accountName=Phan Hieu Huy&addInfo=001 GIA BẢO TAI LIEU HPT VA QUY LOP",
+"25140002": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=002 ANH KIỆT TAI LIEU HOA PHAN TICH",
+"25140003": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=003 QUỐC LINH TAI LIEU HOA PHAN TICH",
+"25140004": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=004 NGỌC LUÂN TAI LIEU HOA PHAN TICH",
+"25140005": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=005 ĐỨC NHÂN TAI LIEU HOA PHAN TICH",
+"25140006": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=006 GIA PHÚC TAI LIEU HOA PHAN TICH",
+"25140007": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=007 MINH TÂM TAI LIEU HOA PHAN TICH",
+"25140008": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=008 MẠNH HÀ TAI LIEU HOA PHAN TICH",
+"25140009": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=105000&accountName=Phan Hieu Huy&addInfo=009 PHÚC TOÀN TAI LIEU HPT VA QUY LOP",
+"25140016": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=016 NGUYÊN BẢO TAI LIEU HOA PHAN TICH",
+"25140028": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=028 NGỌC HÂN TAI LIEU HOA PHAN TICH",
+"25140036": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=036 HIẾU HUY TAI LIEU HOA PHAN TICH",
+"25140041": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=041 PHƯƠNG LINH TAI LIEU HOA PHAN TICH",
+"25140044": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=044 XUÂN MAI TAI LIEU HOA PHAN TICH",
+"25140049": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=70266&accountName=Phan Hieu Huy&addInfo=049 NHƯ NGỌC TAI LIEU HOA PHAN TICH",
+"25140050": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=050 XUÂN NHI TAI LIEU HOA PHAN TICH",
+"25140051": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=051 MINH NHƯ TAI LIEU HOA PHAN TICH",
+"25140053": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=053 ĐÔNG PHÁT TAI LIEU HOA PHAN TICH",
+"25140056": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=056 QUỐC PHÚ TAI LIEU HOA PHAN TICH",
+"25140058": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=058 MINH QUÂN TAI LIEU HOA PHAN TICH",
+"25140064": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=30266&accountName=Phan Hieu Huy&addInfo=064 MINH THƯ TAI LIEU HOA PHAN TICH",
+"25140081": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=081 THIÊN ÂN TAI LIEU HOA PHAN TICH",
+"25140088": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=30266&accountName=Phan Hieu Huy&addInfo=088 AN BÌNH TAI LIEU HOA PHAN TICH",
+"25140094": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=094  NGUYEN HAN TAI LIEU HOA PHAN TICH",
+"25140107": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=5266&accountName=Phan Hieu Huy&addInfo=107 ĐĂNG KHOA QUY LOP",
+"25140121": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=121 THÀNH NGUYÊN TAI LIEU HOA PHAN TICH",
+"25140130": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=30266&accountName=Phan Hieu Huy&addInfo=130 THÚY PHƯỢNG TAI LIEU HOA PHAN TICH",
+"25140131": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=131 TẤN SANG TAI LIEU HOA PHAN TICH",
+"25140137": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=137 PHÚC THỊNH TAI LIEU HOA PHAN TICH",
+"25140169": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=169 VĂN HẢO TAI LIEU HOA PHAN TICH",
+"25140174": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=174 QUANG HUY TAI LIEU HOA PHAN TICH",
+"25140175": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=175 GIA HUY TAI LIEU HOA PHAN TICH",
+"25140178": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=178 TUẤN KIỆT TAI LIEU HOA PHAN TICH",
+"25140182": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=30266&accountName=Phan Hieu Huy&addInfo=182 THÙY LINH TAI LIEU HOA PHAN TICH",
+"25140186": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=90266&accountName=Phan Hieu Huy&addInfo=186 HOÀI NAM TAI LIEU HPT VA QUY LOP",
+"25140197": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=90266&accountName=Phan Hieu Huy&addInfo=197 ĐỨC PHÁT TAI LIEU HPT VA QUY LOP",
+"25140205": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=30266&accountName=Phan Hieu Huy&addInfo=205 BỘI SAN TAI LIEU HOA PHAN TICH",
+"25140210": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=85000&accountName=Phan Hieu Huy&addInfo=210 BẢO THIÊN TAI LIEU HOA PHAN TICH",
+"25140215": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=210266&accountName=Phan Hieu Huy&addInfo=215 MINH TRIẾT TAI LIEU HPT VA QUY LOP",
+"25140223": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=223 TUẤN VŨ TAI LIEU HOA PHAN TICH",
+"25140226": "https://img.vietqr.io/image/970407-2888270205-compact.png?amount=50266&accountName=Phan Hieu Huy&addInfo=226 KIM YẾN TAI LIEU HOA PHAN TICH",
+
+    };
+
+
+    // =====================================
+    // HIỂN THỊ ẢNH
+    // =====================================
+
+    function showImage() {
+
+      const id =
+        document.getElementById("userId").value.trim();
+
+      const resultDiv =
+        document.getElementById("result");
+
+
+      // Chưa nhập MSSV
+      if (!id) {
+
+        resultDiv.innerHTML = `
+          <div class="error">
+            ⚠️ Vui lòng nhập MSSV
+          </div>
+        `;
+
+        return;
       }
+
+
+      // Có MSSV
+      if (images[id]) {
+
+        resultDiv.innerHTML = `
+
+          <div class="success-text">
+            ✅ Đã tìm thấy thông tin cho MSSV: ${id}
+          </div>
+
+          <img
+            id="resultImage"
+            class="result-image"
+            src="${images[id]}"
+            alt="Ảnh cho MSSV ${id}"
+          >
+
+          <br>
+
+          <button
+            class="download-btn"
+            onclick="downloadImage('${images[id]}', '${id}')"
+          >
+            ⬇️ Tải ảnh xuống
+          </button>
+
+        `;
+
+      }
+
+      // Không tìm thấy
+      else {
+
+        resultDiv.innerHTML = `
+
+          <div class="error">
+            ❌ Không tìm thấy MSSV: ${id}
+          </div>
+
+        `;
+
+      }
+
     }
+
+
+    // =====================================
+    // HÀM TẢI ẢNH
+    // =====================================
+
+    async function downloadImage(url, id) {
+
+      const button =
+        document.querySelector(".download-btn");
+
+      // Đổi trạng thái nút
+      button.disabled = true;
+      button.innerText = "⏳ Đang tải...";
+
+
+      try {
+
+        // Lấy ảnh từ URL
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error("Không thể tải ảnh");
+        }
+
+        // Chuyển ảnh thành file Blob
+        const blob = await response.blob();
+
+        // Tạo URL tạm thời
+        const blobUrl =
+          window.URL.createObjectURL(blob);
+
+
+        // Tạo thẻ <a> để tải
+        const link =
+          document.createElement("a");
+
+        link.href = blobUrl;
+
+        link.download = `MSSV-${id}.png`;
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
+
+
+        // Xóa URL tạm
+        window.URL.revokeObjectURL(blobUrl);
+
+
+        // Khôi phục nút
+        button.disabled = false;
+        button.innerText = "✅ Đã tải ảnh";
+
+        setTimeout(() => {
+          button.innerText = "⬇️ Tải ảnh xuống";
+        }, 2000);
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+        button.disabled = false;
+        button.innerText = "⬇️ Tải ảnh xuống";
+
+        alert(
+          "Không thể tải ảnh trực tiếp. " +
+          "Trình duyệt có thể đang chặn việc tải ảnh từ máy chủ này."
+        );
+
+      }
+
+    }
+
+
+    // =====================================
+    // NHẤN ENTER ĐỂ TRA CỨU
+    // =====================================
+
+    document
+      .getElementById("userId")
+      .addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+          showImage();
+        }
+
+      });
+
   </script>
+
 </body>
 </html>
+```
